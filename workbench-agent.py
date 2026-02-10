@@ -16,6 +16,7 @@ from argparse import RawTextHelpFormatter
 import sys
 import traceback
 import requests
+import truststore
 
 # from dotenv import load_dotenv
 logger = logging.getLogger("log")
@@ -63,6 +64,7 @@ class Workbench:
         logger.debug("url %s", url)
         logger.debug("url %s", headers)
         logger.debug(req_body)
+
         response = requests.request(
             "POST", url, headers=headers, data=req_body, timeout=1800
         )
@@ -154,6 +156,9 @@ class Workbench:
             path (str): Path to the file or files to upload.
             chunked_upload (bool): Enable/disable chunk upload.
         """
+
+        truststore.inject_into_ssl()
+
         file_size = os.path.getsize(path)
         size_limit = 8 * 1024 * 1024  # 8MB in bytes. Based on the default value of post_max_size in php.ini
         # Prepare parameters

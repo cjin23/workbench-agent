@@ -3,3 +3,4 @@ python-dotenv
 pycodestyle
 pylint
 black
+truststore
